@@ -3,15 +3,19 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DeveloperAnnur\Belajar\PHP\MVC\App\Router;
+use DeveloperAnnur\Belajar\PHP\MVC\Config\Database;
 use DeveloperAnnur\Belajar\PHP\MVC\Controller\HomeController;
-use DeveloperAnnur\Belajar\PHP\MVC\Controller\ProductController;
-use DeveloperAnnur\Belajar\PHP\MVC\Middleware\AuthMiddleware;
+use DeveloperAnnur\Belajar\PHP\MVC\Controller\UserController;
 
-Router::add('GET', '/products/([0-9a-zA-Z]*)/categories/([0-9a-zA-Z]*)', ProductController::class, 'categories');
+Database::getConnection('prod');
 
-Router::add('GET', '/', HomeController::class, 'index');
-Router::add('GET', '/hello', HomeController::class, 'hello', [AuthMiddleware::class]);
-Router::add('GET', '/world', HomeController::class, 'world', [AuthMiddleware::class]);
-Router::add('GET', '/about', HomeController::class, 'about');
+// Home Controller
+Router::add('GET', '/', HomeController::class, 'index', []);
+
+// User Controller
+Router::add('GET', '/users/register', UserController::class, 'register', []);
+Router::add('POST', '/users/register', UserController::class, 'postRegister', []);
+Router::add('GET', '/users/login', UserController::class, 'login', []);
+Router::add('POST', '/users/login', UserController::class, 'postLogin', []);
 
 Router::run();
