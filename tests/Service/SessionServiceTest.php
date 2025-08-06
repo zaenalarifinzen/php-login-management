@@ -2,6 +2,8 @@
 
 namespace DeveloperAnnur\Belajar\PHP\MVC\Service;
 
+require_once __DIR__ . "/../Helper/helper.php";
+
 use DeveloperAnnur\Belajar\PHP\MVC\Config\Database;
 use DeveloperAnnur\Belajar\PHP\MVC\Domain\Session;
 use DeveloperAnnur\Belajar\PHP\MVC\Repository\SessionRepository;
@@ -9,9 +11,6 @@ use DeveloperAnnur\Belajar\PHP\MVC\Repository\UserRepository;
 use DeveloperAnnur\Belajar\PHP\MVC\Domain\User;
 use PHPUnit\Framework\TestCase;
 
-function setcookie(string $name, string $value){
-    echo "$name: $value";
-};
 
 class SessionServiceTest extends TestCase
 {

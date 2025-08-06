@@ -45,4 +45,23 @@ class UserRepositoryTest extends TestCase
         $user = $this->userRepository->findById('notfound');
         assertNull($user);
     }
+
+    public function testUpdate()
+    {
+        $user = new User();
+        $user->id = 'zaenal';
+        $user->name = 'Zaenal';
+        $user->password = 'rahasia';
+
+        $this->userRepository->save($user);
+
+        $user->name = 'Arifin';
+        $this->userRepository->update($user);
+
+        $result = $this->userRepository->findById($user->id);
+
+        assertEquals($user->id, $result->id);
+        assertEquals($user->name, $result->name);
+        assertEquals($user->password, $result->password);
+    }
 }
