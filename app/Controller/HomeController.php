@@ -3,48 +3,38 @@
 namespace DeveloperAnnur\Belajar\PHP\MVC\Controller;
 
 use DeveloperAnnur\Belajar\PHP\MVC\App\View;
+use DeveloperAnnur\Belajar\PHP\MVC\Config\Database;
+use DeveloperAnnur\Belajar\PHP\MVC\Repository\SessionRepository;
+use DeveloperAnnur\Belajar\PHP\MVC\Repository\UserRepository;
+use DeveloperAnnur\Belajar\PHP\MVC\Service\SessionService;
 
 class HomeController
 {
+    private SessionService $sessionService;
+
+    public function __construct() {
+        $connection = Database::getConnection();
+        $sessionRepository = new SessionRepository($connection);
+        $userRepository = new UserRepository($connection);
+        $this->sessionService = new SessionService($sessionRepository, $userRepository);
+    }
 
     function index(): void
     {
-        $model = [
-            "title" => "PHP MVC Course",
-            "content" => "Selamat Belajar PHP MVC dari PZN Course"
-        ];
-        
-        View::render('Home/index', $model);
+        $user = $this->sessionService->current();
+        if ($user == null) {
+            View::render('Home/index', [
+                "title" => "PHP Login Management"
+            ]);
+        } else {
+            View::render('Home/dashboard', [
+                "title" => "Dashboard",
+                "user" => [
+                    "name" => $user->name
+                ]
+            ]);
+        }
     }
 
-    function hello(): void
-    {
-        echo "HomeController.hello()";
-    }
-
-    function world(): void
-    {
-        echo "HomeController.world()";
-    }
-
-    function about(): void
-    {
-        echo "Author : Zaenal Arifin";
-    }
-
-    function login() : void
-    {
-        $request = [
-            "username" => $_POST['username'],
-            "password" => $_POST['password'],
-        ];
-
-        $user = [
-
-        ];
-
-        $response = [
-            "message" => "Login sukses!"
-        ];
-    }
+    
 }
